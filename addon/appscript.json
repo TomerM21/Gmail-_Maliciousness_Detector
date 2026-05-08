@@ -1,0 +1,20 @@
+{
+  "timeZone": "Asia/Jerusalem",
+  "dependencies": {},
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/gmail.addons.execute", 
+    "https://www.googleapis.com/auth/gmail.readonly"
+  ],
+  "gmail": {
+    "name": "TOMERS_DETECTOR",
+    "logoUrl": "https://www.image2url.com/r2/default/images/1778095373492-add71b3f-da2a-4200-9406-35f22cb5c839.png",
+    "contextualTriggers": [
+      {
+        "unconditional": {},
+        "onTriggerFunction": "buildAddOn"
+      }
+    ],
+    "primaryColor": "#D93025",
+    "secondaryColor": "#4285F4"
+  }
+}
