@@ -2,15 +2,11 @@
 function buildAddOn(e) {//google delivers e-event when email is opened(in our case)
  var card = CardService.newCardBuilder();
   
-  // card.setHeader(CardService.newCardHeader()
-  //   .setTitle("Phish Finder")
-  //   .setSubtitle("Ready to analyze this email?"));
+ 
 
   var section = CardService.newCardSection();
-  // section.addWidget(CardService.newTextParagraph()
-  //   .setText("produce a maliciousness score"));
 
-  // יצירת הכפתור שמפעיל את הניתוח האמיתי
+  // button generating
   var action = CardService.newAction().setFunctionName('triggerAnalysis');
   var button = CardService.newTextButton()
       .setText("check the mail in my current window")
@@ -25,19 +21,19 @@ function buildAddOn(e) {//google delivers e-event when email is opened(in our ca
 }
 
 /**
- * This will be the function that makes the HTTP request to your backend.
+ *  function that makes the HTTP request to the backend.
  */
 function triggerAnalysis(e) {
   var messageId = e.gmail.messageId;
   var accessToken = e.gmail.accessToken;
   
-  // 1. הגדרת הרשאות ושליפת תוכן המייל האמיתי
+  // getting the mail info
   GmailApp.setCurrentMessageAccessToken(accessToken);
   var message = GmailApp.getMessageById(messageId);
   var sender = message.getFrom();
   var body = message.getPlainBody(); 
   
-  // 2. כתובת השרת שלך (אל תשכח לעדכן לכתובת ה-ngrok העדכנית!)
+//here paste your server url
   var backendUrl = "https://crawling-violet-stuck.ngrok-free.dev/analyze"; 
   
   var payload = {
@@ -54,11 +50,11 @@ function triggerAnalysis(e) {
   };
   
   try {
-    // 3. שליחה ל-Python וקבלת ה-JSON מה-AI
+    //info request from the python server in order to get the json
     var response = UrlFetchApp.fetch(backendUrl, options);
     var data = JSON.parse(response.getContentText());
     
-    // 4. יצירת כרטיס התוצאות
+   
     return createResultCard(data);
   } catch (err) {
     return CardService.newCardBuilder()
@@ -73,15 +69,11 @@ function createResultCard(data) {
   var card = CardService.newCardBuilder();
   var ltr = "\u202d"; 
   var pop = "\u202c";
-
-  // לוגיקה: ככל ש-total_score (מה-AI) גבוה יותר, המייל מסוכן יותר.
-  // אם אתה רוצה ש-malscore ייצג את רמת הסיכון, פשוט תשתמש ב-data.total_score.
   var malscore = data.total_score
   
   var statusMessage = "";
   var headerIconUrl = "";
 
-  // קביעת הודעה ואיקון לפי רמת הסיכון (0-100)
   if (malscore < 30) {
     statusMessage = "Great weather conditions-go surfing upwind 🏄";
     headerIconUrl = "https://fonts.gstatic.com/s/e/notoemoji/latest/1f3c4/512.png";
@@ -93,12 +85,10 @@ function createResultCard(data) {
     headerIconUrl = "https://fonts.gstatic.com/s/e/notoemoji/latest/26a0/512.png";
   }
 
-  // הגדרת ה-Header עם הסטטוס והאיקון
   card.setHeader(CardService.newCardHeader()
     .setTitle(ltr + statusMessage + pop)
     .setImageUrl(headerIconUrl));
 
-  // --- סקציית הציון המוגדל (הפתרון להבלטה) ---
   var scoreSection = CardService.newCardSection();
   scoreSection.addWidget(CardService.newTextParagraph()
     .setText(ltr + "<br><b><font color=\"#202124\">MALICIOUSNESS SCORE: </font></b>" + 
@@ -106,8 +96,8 @@ function createResultCard(data) {
   
   card.addSection(scoreSection);
 
-  // פונקציה לבניית שאר הסקציות (פירוט הניתוח)
-  function buildSection(title, analysis, iconUrl) {
+  // building the other sections
+   function buildSection(title, analysis, iconUrl) {
     var section = CardService.newCardSection().setHeader(ltr + title + pop);
     
     var pointsText = (analysis && Array.isArray(analysis.points)) ? analysis.points.join("\n") : ltr + "No details available." + pop;
