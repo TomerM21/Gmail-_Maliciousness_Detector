@@ -27,7 +27,7 @@ The system is composed of three main components:
 * Sends structured prompts to **Google Gemini AI**
 * Returns risk scoring and detailed analysis
 
-###  ngrok Tunnel (Development Bridge)
+###  Ngrok Tunnel (Development Bridge)
 
 * Connects local backend to Google cloud environment
 * Enables real-time testing during development
