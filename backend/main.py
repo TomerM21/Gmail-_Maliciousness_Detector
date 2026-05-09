@@ -11,17 +11,15 @@ from pathlib import Path
 #gemini settings
 load_dotenv()
 app = FastAPI(title="Email Security Analyzer")
-# מוצא את הנתיב לתיקייה שבה נמצא main.py
+# find the .env file in the current directory
 current_dir = Path(__file__).resolve().parent
 env_path = current_dir / ".env"
-
-# טוען את הקובץ מהנתיב המדויק
 load_dotenv(dotenv_path=env_path)
 
 api_key = os.getenv("GEMINI_API_KEY")
 
 if not api_key:
-    raise ValueError("❌ Could not find GEMINI_API_KEY in .env file!")
+    raise ValueError("Could not find GEMINI_API_KEY in .env file!")
 
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-2.5-flash") #gemini-2.5-pro
@@ -38,7 +36,6 @@ def read_root():
 
 @app.post("/analyze")
 async def analyze_email(payload: EmailPayload):
-    # הפרומפט שמנחה את ה-AI איך לנתח את המייל
     prompt = prompt = f"""
 Analyze this email for phishing as a cybersecurity expert:
 Sender: {payload.sender}
