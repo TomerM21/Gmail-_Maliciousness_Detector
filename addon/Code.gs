@@ -92,7 +92,7 @@ function createResultCard(data) {
   var scoreSection = CardService.newCardSection();
   scoreSection.addWidget(CardService.newTextParagraph()
     .setText(ltr + "<br><b><font color=\"#202124\">MALICIOUSNESS SCORE: </font></b>" + 
-             "<b><font color=\"#d93025\">" + malscore + "%</font></b>" + pop));
+             "<b><font color=\"#d93025\">" + malscore + "</font></b>" + pop));
   
   card.addSection(scoreSection);
 
